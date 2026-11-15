@@ -1,0 +1,112 @@
+# ============================================================
+#  AntiESP - server-side ESP / freecam protection
+#  The client is simply never told about things it can't see,
+#  so ESP, freecam, storage ESP, tracers, health tags etc. have
+#  nothing to show. No client mod can read data that never arrives.
+# ============================================================
+
+# Worlds where nothing is filtered.
+disabled-worlds: []
+
+# Players with this permission see everything.
+bypass-permission: antiesp.bypass
+
+# Spectators can fly through walls anyway, so they see everything.
+spectators-bypass: true
+
+# ------------------------------------------------------------
+# Player / entity ESP (player ESP, tracers, nametags through walls,
+# freecam peeking at bases, armour/held-item ESP)
+# ------------------------------------------------------------
+entities:
+  enabled: true
+  # Bukkit EntityType names. PLAYER is the important one.
+  # Add mobs if you want (e.g. VILLAGER, ARMOR_STAND, ITEM_FRAME) - costs more CPU.
+  types:
+    - PLAYER
+  # How often each viewer is checked, in ticks. 1 = smoothest, 2 = good balance.
+  check-interval: 2
+  # Entities further than this are not raycast (server tracking range for players is 48 by default).
+  max-distance: 64
+  # Always visible inside this radius (keeps melee combat 100% smooth).
+  always-visible-distance: 3.0
+  # Failed checks in a row before an already-visible entity is hidden again (stops flicker).
+  hide-after-checks: 2
+  # Grow target hitboxes by this much to cover ping / interpolation (prevents pop-in).
+  box-expand: 0.6
+  # Stretch hitboxes along movement by this many ticks of motion.
+  movement-lookahead-ticks: 3
+  # Also raycast from where the F5 / front camera could be.
+  third-person-camera: true
+  third-person-distance: 4.0
+  # Glowing entities are meant to be seen through walls.
+  always-show-glowing: true
+
+# ------------------------------------------------------------
+# Storage ESP (chest ESP, stash finders, spawner finders)
+# Hidden blocks are sent as stone/deepslate/netherrack/end stone and
+# their block-entity data is stripped from the chunk packet.
+# ------------------------------------------------------------
+blocks:
+  enabled: true
+  types:
+    - chest
+    - trapped_chest
+    - ender_chest
+    - barrel
+    - shulker_box
+    - white_shulker_box
+    - orange_shulker_box
+    - magenta_shulker_box
+    - light_blue_shulker_box
+    - yellow_shulker_box
+    - lime_shulker_box
+    - pink_shulker_box
+    - gray_shulker_box
+    - light_gray_shulker_box
+    - cyan_shulker_box
+    - purple_shulker_box
+    - blue_shulker_box
+    - brown_shulker_box
+    - green_shulker_box
+    - red_shulker_box
+    - black_shulker_box
+    - hopper
+    - dropper
+    - dispenser
+    - furnace
+    - blast_furnace
+    - smoker
+    - brewing_stand
+    - crafter
+    - spawner
+    - trial_spawner
+    - vault
+    - decorated_pot
+    - chiseled_bookshelf
+    - beacon
+  check-interval: 4
+  max-distance: 64
+  always-visible-distance: 4.0
+  # Hide again when out of sight (so ESP can't remember what you looked at earlier).
+  rehide: true
+  # "auto" = stone / deepslate (y<0) / netherrack / end_stone, or any block name like "air".
+  replacement: auto
+
+# ------------------------------------------------------------
+# Health ESP (health bars / numbers above other players)
+# ------------------------------------------------------------
+health:
+  enabled: true
+  players-only: true
+  # Health every other player appears to have. Death animations still work.
+  spoof-value: 20.0
+  hide-absorption: true
+
+# ------------------------------------------------------------
+# Sound ESP (radar mods that plot sound sources)
+# Positional sounds within `radius` of a hidden entity are dropped.
+# ------------------------------------------------------------
+sounds:
+  mask-near-hidden-entities: true
+  radius: 2.0

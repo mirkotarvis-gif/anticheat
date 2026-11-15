@@ -1,0 +1,22 @@
+name: AntiESP
+version: '${version}'
+main: dev.antiesp.AntiESP
+api-version: '1.21'
+description: Server-side anti-ESP. Never sends players, storage blocks or health data a client should not be able to see.
+depend: [packetevents]
+folia-supported: false
+
+commands:
+  antiesp:
+    description: AntiESP admin command
+    usage: /antiesp <status|inspect|reload>
+    permission: antiesp.admin
+    aliases: [aesp]
+
+permissions:
+  antiesp.admin:
+    description: Use /antiesp
+    default: op
+  antiesp.bypass:
+    description: See everything (no ESP filtering). Ops do NOT get this by default.
+    default: false
