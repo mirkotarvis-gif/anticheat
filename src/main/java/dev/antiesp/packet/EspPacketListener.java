@@ -233,10 +233,12 @@ public final class EspPacketListener implements PacketListener {
         WrapperPlayServerSoundEffect w = new WrapperPlayServerSoundEffect(event);
         String cat = w.getSoundCategory() == null ? "" : w.getSoundCategory().name();
         if (cat.equals("WEATHER") || cat.equals("MUSIC") || cat.equals("RECORD") || cat.equals("MASTER")) return;
-        Vector3d p = w.getPosition();
+        // getEffectPosition() exists in every PacketEvents 2.x version; it is fixed-point (x8).
+        Vector3i p = w.getEffectPosition();
+        double px = p.getX() / 8.0, py = p.getY() / 8.0, pz = p.getZ() / 8.0;
         double r2 = s.soundRadius * s.soundRadius;
         for (int i = 0; i + 2 < hidden.length; i += 3) {
-            double dx = p.getX() - hidden[i], dy = p.getY() - hidden[i + 1], dz = p.getZ() - hidden[i + 2];
+            double dx = px - hidden[i], dy = py - hidden[i + 1], dz = pz - hidden[i + 2];
             if (dx * dx + dy * dy + dz * dz <= r2) {
                 event.setCancelled(true);
                 return;
